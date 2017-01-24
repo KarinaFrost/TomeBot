@@ -296,4 +296,4 @@ Commands:
         return(results)
 
 bot = TomeBot()
-bot.run(MjczNDE4MDI0NDUzNjY4ODY2.C2jQtQ.EA-mPWjV3RiqocEv6RoE2lEWtgc)
+bot.run(token)
