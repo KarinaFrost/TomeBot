@@ -8,7 +8,7 @@ import operator
 ops = {"+":operator.add,"-":operator.sub}
 
 #edit these values if you want to load the various json files from different folders.
-paths = {"license":"license.json","spells":"spells.json","monsters":"monsters.json","token":"token.json","log":"log.json"}
+paths = {"license":"license.json","spells":"spells.json"."skills":"skills.json","monsters":"monsters.json","token":"token.json","log":"log.json"}
 
 license = {}
 with open(paths["license"],'r') as fp:
@@ -17,7 +17,11 @@ with open(paths["license"],'r') as fp:
 spells = {}
 with open(paths["spells"],'r') as fp:
     spells = json.load(fp)
-
+    
+skills = {}
+with open(paths["skills"],'r') as fp:
+    spells = json.load(fp)
+    
 monsters = {}
 with open(paths["monsters"],'r') as fp:
     monsters = json.load(fp)
@@ -68,70 +72,19 @@ class TomeBot(discord.Client):
     def commands(self, message):
         response= """
 Commands:
-?roll - roll dice, syntax ?roll xdy
-?spellsearch - search for a dnd 5e spell
-?spellinfo - get information about a specific dnd 5e spell
-?monstersearch - search for a dnd 5e monster
-?monsterinfo - get information about a specific dnd 5e monster
+
+?spellsearch - search for a Spell.
+?spellinfo - get information about a specific Spell
+?monstersearch - search for an Enemy.
+?monsterinfo - get information about a specific Enemy.
 ?dminfo - like monsterinfo, but also gives stats such as armor class, hp etc.
 
-To find this bot in its main server (which it was built for) join here:
-https://discord.gg/25bf5NT
 
-also on github too!
-https://github.com/Carbsta/TomeBot
-If you want to help me implement Volo's, or work on the SRD version come find me here.
-
-Hosted by @Crablabuk.
-
-To add to your server use this link:
-https://discordapp.com/oauth2/authorize?client_id=247413966094073856&scope=bot&permissions=0
-(it doesn't require any permisions and never will)
 """
         return([response])
 
 
-    def roll(self, message):
-        try:
-            words = message.content.split(" ")
-            dicenumbers = words[1].split("d")
-            try:
-                modifierint = words[2][1:]
-                modifiersign = words[2][:1]
-            except:
-                modifierint = ""
-                modifiersign = ""
-            total = 0
-            rolls = "Rolls are: "
-            if len(dicenumbers[0]) < 4:
-                for x in (range(0,int(dicenumbers[0]))):
-                    if "+" in dicenumbers[1]:
-                        values = dicenumbers[1].split("+")
-                        roll = random.randint(1,int(values[0]))
-                        rolls += str(roll)+"+"+values[1]
-                        roll = roll + int(values[1])
-                        rolls += "="+str(roll)+", "
-                    elif "-" in dicenumbers[1]:
-                        values = dicenumbers[1].split("-")
-                        roll = random.randint(1,int(values[0]))
-                        rolls += str(roll)+"-"+values[1]
-                        roll = roll - int(values[1])
-                        rolls += "="+str(roll)+", "
-                    else:
-                        roll = random.randint(1,int(dicenumbers[1]))
-                        rolls += str(roll)+", "
-                    total += roll
-                if modifiersign == "":
-                    rolls = rolls[:-2]+". Total = "+str(total)
-                else:
-                    rolls = rolls[:-2]+". "+modifiersign+" "+modifierint+". Total = "+str(ops[modifiersign](total,int(modifierint)))
-                if len(rolls)>1900:
-                    rolls = "Don't do stupid stuff with the Roll command."
-            else:
-                rolls = "Don't do stupid stuff with the Roll command."
-        except:
-            rolls = "Don't do stupid stuff with the Roll command."
-        return([rolls])
+   
 
     def spellinfo(self, message):
         searchterm = message.content.split(' ',1)[1].lower()
